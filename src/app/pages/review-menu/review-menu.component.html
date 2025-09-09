@@ -1,0 +1,20 @@
+<app-navbar/>
+<main>
+    <section class="cont-create">
+        <h1 class="title">MENUS</h1>
+        <div class="table-container">
+            <table>
+                <tr *ngFor="let item of menus">
+                <td>{{ item?.men_id }}</td>
+                <td>{{ item?.men_name }}</td>
+                <td class="cont-action">
+                    <button class="btn-action" (click)="editMenu(item)">✏️ Editar</button>
+                    <button class="btn-action" (click)="deleteMenu(item)">🗑️ Eliminar</button>
+                </td>
+            </table>
+        </div>
+        <div class="add-menu-btn">
+            <button (click)="addMenu()">➕ Agregar Menú</button>
+        </div>
+    </section>
+</main>

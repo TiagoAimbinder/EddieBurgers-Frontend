@@ -39,7 +39,15 @@ export enum endpoints {
   // ---- UnitsSold
   createsaleHistory = '/saleHistory/create',
   getAllsaleHistory = '/saleHistory/getMonthly',
-  getsaleHistoryTotal = '/saleHistory/getTotals'
+  getsaleHistoryTotal = '/saleHistory/getTotals',
+
+  // ---- MenuxReviews
+  createReview = '/review/create',
+  createMenuxReview = '/menu/create',
+  getAllMenuxReview = '/menu/getAll',
+  updateMenu = '/menu/update',
+  deleteMenu = '/menu/delete',
+
 
 
 

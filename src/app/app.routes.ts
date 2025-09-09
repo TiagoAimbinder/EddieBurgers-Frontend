@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { LoginGuard } from './core/guards/login.guard';
+import { LoginGuard } from './core/guards/login.guard'
 import { PanelGuard } from './core/guards/panel.guard';
 
 export const routes: Routes = [
@@ -15,11 +15,14 @@ export const routes: Routes = [
   { path: 'categoria', loadComponent: () => import('./pages/categories/categories.component').then(m => m.CategoriesComponent), canActivate: [LoginGuard]},
   { path: 'ventas', loadComponent: () => import('./pages/units-sold/units-sold.component').then(m => m.UnitsSoldComponent), canActivate: [LoginGuard]},
   { path: 'ventas/historial', loadComponent: () => import('./pages/units-sold-history/units-sold-history.component').then (m => m.UnitsSoldHistoryComponent), canActivate: [LoginGuard]},
+  { path: 'resenas', loadComponent: () => import('./pages/review/review.component').then(m => m.ReviewComponent), canActivate: [LoginGuard]},
+  { path: 'menuxr', loadComponent: () => import('./pages/review-menu/review-menu.component').then(m => m.ReviewMenuComponent), canActivate: [LoginGuard]},
 
 
 
 
 
   { path: '', redirectTo: 'inicio', pathMatch: 'full' }, 
-  { path: '**', redirectTo: 'inicio', pathMatch: 'full' },
+  { path: 'review-form', loadComponent: () => import('./pages/review-form/review-form.component').then(m => m.ReviewFormComponent) },
+
 ];

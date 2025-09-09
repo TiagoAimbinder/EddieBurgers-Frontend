@@ -1,0 +1,26 @@
+main {
+  background-color: var(--secondary-color);
+  height: calc(100vh - 70px);
+}
+
+
+.cont-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: calc(100vh - 70px);
+  align-items: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.btn {
+  padding: 12px 20px;
+  width: 100%;
+  font-size: 20px;
+  background-color: var(--main-color);
+  border: 1px solid var(--main-color);
+  border-radius: 4px;
+  color: var(--light-color);
+  font-weight: 400;
+}

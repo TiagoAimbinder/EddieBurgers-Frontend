@@ -1,0 +1,44 @@
+<h2>Dejá tu reseña 🍔</h2>
+
+<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+
+  <div>
+    <label>Nombre</label>
+    <input type="text" formControlName="userxr_name" />
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input type="email" formControlName="userxr_email" />
+  </div>
+
+  <div>
+    <label>Teléfono</label>
+    <input type="text" formControlName="userxr_phone" />
+  </div>
+
+  <div>
+    <label>Elegí tu menú</label>
+    <select formControlName="men_id">
+      <option *ngFor="let m of menus" [value]="m.men_id">{{ m.men_name }}</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Puntaje</label>
+    <select formControlName="mxr_star">
+      <option [value]="1">⭐</option>
+      <option [value]="2">⭐⭐</option>
+      <option [value]="3">⭐⭐⭐</option>
+      <option [value]="4">⭐⭐⭐⭐</option>
+      <option [value]="5">⭐⭐⭐⭐⭐</option>
+    </select>
+  </div>
+
+  <div>
+    <label>Mensaje (opcional)</label>
+    <textarea formControlName="rev_message"></textarea>
+  </div>
+
+  <button type="submit" [disabled]="reviewForm.invalid">Enviar Reseña</button>
+</form>

@@ -112,3 +112,9 @@ main {
   background-position: 0 -50px;
 
 }
+
+.resena {
+  background: rgba(0, 0, 0, 0.5) url('/assets/img/resenas.jpg') center no-repeat;
+  background-size: cover;
+
+}

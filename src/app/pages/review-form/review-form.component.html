@@ -1,44 +1,54 @@
-<h2>Dejá tu reseña 🍔</h2>
+<main>
+  <div class="cont">
+    <div class="cont-title">
+      <h2 class="title">¡Dejanos tu reseña!</h2>
+    </div>
 
-<form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+      <div class="cont-form">
+        <div class="cont-inpt">
+        <label class="title-inp">Nombre</label>
+        <input class="inp" type="text" formControlName="userxr_name" />
+      </div>
 
-  <div>
-    <label>Nombre</label>
-    <input type="text" formControlName="userxr_name" />
-  </div>
+      <div class="cont-inpt">
+        <label class="title-inp">Email</label>
+        <input class="inp" type="email" formControlName="userxr_email" />
+      </div>
 
-  <div>
-    <label>Email</label>
-    <input type="email" formControlName="userxr_email" />
-  </div>
+      <div class="cont-inpt">
+        <label class="title-inp">Teléfono</label>
+        <input class="inp" type="text" formControlName="userxr_phone" />
+      </div>
 
-  <div>
-    <label>Teléfono</label>
-    <input type="text" formControlName="userxr_phone" />
-  </div>
+      <div class="cont-inpt">
+        <label class="title-inp">Elegí tu menú</label>
+        <select  class="inp" formControlName="men_id">
+          <option *ngFor="let m of menus" [value]="m.men_id">{{ m.men_name }}</option>
+        </select>
+      </div>
 
-  <div>
-    <label>Elegí tu menú</label>
-    <select formControlName="men_id">
-      <option *ngFor="let m of menus" [value]="m.men_id">{{ m.men_name }}</option>
-    </select>
-  </div>
+      <div class="cont-inpt">
+        <label class="title-inp">Puntaje</label>
+        <select  class="inp" formControlName="mxr_star">
+          <option [value]="1">⭐</option>
+          <option [value]="2">⭐⭐</option>
+          <option [value]="3">⭐⭐⭐</option>
+          <option [value]="4">⭐⭐⭐⭐</option>
+          <option [value]="5">⭐⭐⭐⭐⭐</option>
+        </select>
+      </div>
 
-  <div>
-    <label>Puntaje</label>
-    <select formControlName="mxr_star">
-      <option [value]="1">⭐</option>
-      <option [value]="2">⭐⭐</option>
-      <option [value]="3">⭐⭐⭐</option>
-      <option [value]="4">⭐⭐⭐⭐</option>
-      <option [value]="5">⭐⭐⭐⭐⭐</option>
-    </select>
-  </div>
 
-  <div>
-    <label>Mensaje (opcional)</label>
-    <textarea formControlName="rev_message"></textarea>
-  </div>
+      <div class="cont-inpt">
+        <label class="title-inp">Mensaje (opcional)</label>
+        <textarea  class="inp" formControlName="rev_message"></textarea>
+      </div>
+      </div>
 
-  <button type="submit" [disabled]="reviewForm.invalid">Enviar Reseña</button>
-</form>
+      <div class="cont-btn">
+        <button class="btn" type="submit" [disabled]="reviewForm.invalid">Enviar Reseña</button>
+      </div>
+  </form>
+</div>
+</main>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReviewService } from 'src/app/core/services/ReviewService/review.service';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-review-form',
@@ -39,8 +41,22 @@ export class ReviewFormComponent implements OnInit {
   onSubmit(): void {
     if (this.reviewForm.valid) {
       this.reviewService.createReview(this.reviewForm.value).subscribe({
-        next: (res) => alert('Reseña enviada correctamente!'),
-        error: (err) => console.error('Error al crear reseña:', err)
+        next: (res) => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Reseña creada!',
+            text: 'Tu reseña se ha guardado correctamente.',
+            confirmButtonText: 'Aceptar'
+          });        
+        },
+        error: (err) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Ocurrió un problema al crear la reseña. Inténtalo de nuevo.',
+            confirmButtonText: 'Aceptar'
+          });
+        }
       });
     }
   }

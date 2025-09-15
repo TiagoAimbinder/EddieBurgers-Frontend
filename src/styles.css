@@ -8,12 +8,14 @@
 }
 
 a:visited, a:link, a:active {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 500;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }

@@ -11,12 +11,20 @@
       <nav class="cont-menu">
         <ul>
           <li routerLink="/inicio" class="item">Inicio</li>
-          <li *ngIf="mostrarItem===true" routerLink="/gestion/crear" class="item">Crear Ingreso/Egreso General</li>
-          <li *ngIf="mostrarItem===true" routerLink="/gestion/historial" class="item">Historial Ingreso/Egreso General</li>
-          <li *ngIf="mostrarItem===true" routerLink="/gestion/crearsemanal" class="item">Crear Ingreso/Egreso Semanal</li>
-          <li *ngIf="mostrarItem===true" routerLink="/gestion/historialsemanal" class="item">Historial Ingreso/Egreso Semanal</li>
+            <li class="item dropdown" *ngIf="mostrarItem===true">
+            <span class="dropbtn">Ingresos - Egresos ▾</span>
+          <ul class="submenu">
+            <li *ngIf="mostrarItem===true" routerLink="/gestion/crear" class="item">Crear General</li>
+            <li *ngIf="mostrarItem===true" routerLink="/gestion/historial" class="item">Historial General</li>
+            <li *ngIf="mostrarItem===true" routerLink="/gestion/crearsemanal" class="item">Crear Semanal</li>
+            <li *ngIf="mostrarItem===true" routerLink="/gestion/historialsemanal" class="item">Historial Semanal</li>
+          </ul>
+          </li>
+
           <li routerLink="/categoria" class="item">Costos</li>
           <li routerLink="/ventas" class="item">Cantidad de unidades vendidas</li>
+          <li routerLink="/resenas" class="item">Reseñas</li>
+
         </ul>
       </nav>
     </div>

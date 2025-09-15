@@ -1,0 +1,57 @@
+<app-navbar/>
+
+<main>
+  <section class="sect-history">
+    <h2 class="title">Estadísticas de Reseñas</h2>
+
+
+
+
+    <!-- Tabla resumen de menus -->
+    <div *ngIf="getMenuNames().length >= 1" class="cont-table">
+      <table>
+        <tr class="t-row-head">
+          <th>Menú</th>
+          <th>Promedio de estrellas</th>
+          <th>Total reseñas</th>
+        </tr>
+        <tr *ngFor="let menu of getMenuNames()">
+          <td>{{ menu }}</td>
+          <td>{{ stats[menu].avgStars }}</td>
+          <td>{{ stats[menu].total }}</td>
+        </tr>
+      </table>
+    </div>
+
+        <!-- Dropdown para seleccionar menú -->
+    <div class="cont-filters">
+      <label for="menuSelect" class="input-dropdown lb-input">
+        <input id="menuSelect" type="checkbox" class="input-form input-checkbox">
+        <div class="cont-dropdown">
+          <span *ngFor="let menu of getMenuNames()" (click)="onSelectMenu(menu)" class="item-dropdown">{{ menu }}</span>
+        </div>
+        <span class="input-form">{{ selectedMenu || 'Seleccionar menú' }}</span>
+        <i class="ph-light ph-caret-down icon-arrow"></i>
+      </label>
+    </div>
+
+    <div *ngIf="getMenuNames().length < 1" class="cont-not-news">
+      <span class="not-movement">No hay reseñas registradas.</span>
+    </div>
+
+    <!-- Mostrar reseñas filtradas -->
+    <div *ngIf="filteredReviews.length > 0" class="cont-table mt-4">
+      <h3>Reseñas de {{ selectedMenu }}</h3>
+      <table>
+        <tr class="t-row-head">
+          <th>Mensaje</th>
+          <th>Estrellas</th>
+        </tr>
+        <tr *ngFor="let review of filteredReviews">
+          <td>{{ review.message }}</td>
+          <td>{{ review.stars }}</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+</main>

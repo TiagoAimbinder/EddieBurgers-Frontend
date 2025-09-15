@@ -64,6 +64,51 @@ header {
   transition: transform 0.4s ease-in-out;
 }
 
+/* Dropdown en el sidebar */
+.dropdown {
+  cursor: pointer;
+}
+
+.dropbtn {
+  display: block;
+  padding: 12px 20px;
+  color: var(--light-color);
+  font-size: 20px;
+}
+
+.submenu {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 20px;
+  margin-top: 6px;
+}
+
+/* Dropdown en el sidebar */
+.dropdown {
+  cursor: pointer;
+}
+
+.dropbtn {
+  padding: 0px 0px;
+  color: var(--light-color);
+  font-size: 20px;
+}
+
+.submenu {
+  display: none;
+  flex-direction: column;
+  gap: 0px;
+  padding-left: 0px;
+  margin-top: 0px;
+}
+
+.dropdown:hover .submenu {
+  display: flex;
+}
+
+
+
 input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
   transform: rotate(45deg);
 }
@@ -101,7 +146,7 @@ ul {
   gap: 12px;
   padding: 0;
   list-style: none;
-  padding: 40px;
+  padding: 0px;
 }
 
 .item {

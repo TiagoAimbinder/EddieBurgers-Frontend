@@ -37,6 +37,13 @@ export class ReviewService {
     return this.http.post(url, { men_name });
   }
 
+  getAllReviewsWithMenus(): Observable<any> {
+    const urlApi = `${environment.const_url_review_server}/review/getAllWithMenus`;
+    return this.http.get(urlApi);
+  }
+
+
+
 
 
 } 

@@ -1,20 +1,65 @@
 <app-navbar/>
 <main>
-    <section class="cont-create">
-        <h1 class="title">MENUS</h1>
-        <div class="table-container">
-            <table>
-                <tr *ngFor="let item of menus">
-                <td>{{ item?.men_id }}</td>
-                <td>{{ item?.men_name }}</td>
-                <td class="cont-action">
-                    <button class="btn-action" (click)="editMenu(item)">✏️ Editar</button>
-                    <button class="btn-action" (click)="deleteMenu(item)">🗑️ Eliminar</button>
-                </td>
-            </table>
-        </div>
-        <div class="add-menu-btn">
-            <button (click)="addMenu()">➕ Agregar Menú</button>
-        </div>
-    </section>
+  <section class="cont-create">
+    <h1 class="title">MENUS</h1>
+    <div class="table-container">
+      <table>
+        <tr *ngFor="let menu of menus">
+          <div class="content-category">
+            <td>{{ menu.men_name.length > 15 ? menu.men_name.substring(0,15) + '...' : menu.men_name }}</td>
+            <td class="cont-action">
+              <button class="btn-action" (click)="onClickModify(menu)"><i class="ph-light ph-pencil-simple icon-action"></i></button>
+              <button class="btn-action" (click)="deleteMenu(menu)"><i class="ph-light ph-trash icon-action"></i></button>
+            </td>
+          </div>
+        </tr>
+      </table>
+    </div>
+
+    <div class="cont-btn-add">
+      <button (click)="onClickAddMenu()" class="btn-add">
+        <i class="ph-light ph-rows-plus-bottom icon-add"></i>
+      </button>
+    </div>
+  </section>
 </main>
+
+<!-- MODAL CREAR -->
+<div *ngIf="showModalCreate" class="cont-modal">
+  <form [formGroup]="formMenuCreate" class="cont-form">
+    <div class="cont-input">
+      <span class="text-input">Nombre del menú</span>
+      <label class="lb-input">
+        <input type="text" formControlName="men_name" class="input-form">
+      </label>
+    </div>
+
+    <div class="cont-btn-form">
+      <button type="button" class="btn-form cancel" (click)="onClickCancel()">Cancelar</button>
+      <button type="button" class="btn-form" [disabled]="spinnerLoader" (click)="submitFormCreate()">
+        <span *ngIf="!spinnerLoader">Aceptar</span>
+        <span *ngIf="spinnerLoader" class="loader"></span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- MODAL MODIFICAR -->
+<div *ngIf="showModalModify" class="cont-modal">
+  <form [formGroup]="formMenuModify" class="cont-form">
+    <div class="cont-input">
+      <span class="text-input">Nombre del menú</span>
+      <label class="lb-input">
+        <input type="text" formControlName="men_name" class="input-form">
+      </label>
+    </div>
+
+    <div class="cont-btn-form">
+      <button type="button" class="btn-form cancel" (click)="onClickCancel()">Cancelar</button>
+      <button type="button" class="btn-form" [disabled]="spinnerLoader" (click)="submitFormModify()">
+        <span *ngIf="!spinnerLoader">Aceptar</span>
+        <span *ngIf="spinnerLoader" class="loader"></span>
+      </button>
+    </div>
+  </form>
+</div>

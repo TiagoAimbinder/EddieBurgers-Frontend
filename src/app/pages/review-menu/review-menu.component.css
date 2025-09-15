@@ -1,28 +1,49 @@
+/* --- Layout principal --- */
 main {
-    min-height: calc(100vh - 70px);
-    background-color: var(--secondary-color);
-    padding: 20px 40px;
-    padding-bottom: 20px;
+  min-height: calc(100vh - 70px);
+  background-color: var(--secondary-color);
+  padding: 20px 40px;
+  padding-bottom: 20px;
 }
 
 .title {
   color: var(--light-color);
   text-align: center;
-  margin: 32px auto ; 
+  margin: 32px auto;
+}
+
+.second-title {
+  color: var(--main-color);
+  text-align: center;
+  margin-top: 3px auto;
 }
 
 .cont-create {
   display: flex;
-  flex-direction: column; /* Alinear verticalmente */
-  justify-content: center; /* Alinear horizontalmente */
+  flex-direction: column;
+  justify-content: center;
 }
 
 .table-container {
-  margin: auto; /* Esto centrará horizontalmente el contenedor de la tabla */
-  width: fit-content;  /* Ajusta el ancho del contenedor de la tabla al contenido */
+  margin: auto;
+  width: fit-content;
   margin-top: 10px;
 }
 
+/* --- Items (categorias o menus) --- */
+.content-category {
+  color: var(--light-color);
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  display: flex;
+  padding: 10px;
+  padding-right: 30px;
+  border-radius: 12px;
+  border: 1px solid var(--main-color);
+}
+
+/* --- Botones de acción (editar, eliminar) --- */
 .btn-action {
   color: var(--light-color);
   background-color: transparent;
@@ -31,4 +52,135 @@ main {
   border-radius: 4px;
   padding: 8px;
   margin-left: 15px;
+}
+
+.icon-action {
+  color: var(--light-color);
+  font-size: 20px;
+}
+
+/* --- Botón de agregar --- */
+.cont-btn-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-add {
+  background-color: var(--main-color);
+  border: 1px solid var(--main-color);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.icon-add {
+  color: var(--light-color);
+  font-size: 30px;
+}
+
+/* --- Modales --- */
+.cont-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100vw;
+  background-color: #191919ed;
+  padding: 0 40px;
+  padding-bottom: 20px;
+}
+
+.cont-form {
+  background-color: var(--secondary-color);
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 20px #00000055;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Inputs --- */
+.cont-input {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.text-input {
+  color: var(--light-color);
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.lb-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 5px 10px;
+}
+
+.input-form {
+  color: var(--light-color);
+  padding: 10px;
+  width: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 18px;
+}
+
+.color {
+  height: 40px;
+  padding: 0;
+}
+
+/* --- Botones del formulario --- */
+.cont-btn-form {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 8px;
+  padding: 16px; 
+  font-size: 18px;
+  color: var(--light-color);
+  background-color: var(--main-color);
+  border: 1px solid var(--main-color);
+}
+
+.btn-form.cancel {
+  background-color: transparent;
+  border: 1px solid var(--main-color);
+  color: var(--light-color);
+}
+
+/* --- Loader (si querés agregar animación de carga) --- */
+.loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--main-color);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

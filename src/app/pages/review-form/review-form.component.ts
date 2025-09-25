@@ -3,18 +3,20 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { ReviewService } from 'src/app/core/services/ReviewService/review.service';
 import Swal from 'sweetalert2';
+import { ModalReviewComponent } from 'src/app/core/components/modal-review/modal-review.component';
 
 
 @Component({
   selector: 'app-review-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ModalReviewComponent,],
   templateUrl: './review-form.component.html',
   styleUrls: ['./review-form.component.css']
 })
 export class ReviewFormComponent implements OnInit {
-  reviewForm!: FormGroup;
-  menus: any[] = [];
+
+  public reviewForm!: FormGroup;
+  public menus: any[] = [];
 
   constructor(private fb: FormBuilder, private reviewService: ReviewService) {}
 

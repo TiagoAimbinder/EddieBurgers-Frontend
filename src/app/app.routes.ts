@@ -18,10 +18,7 @@ export const routes: Routes = [
   { path: 'resenas', loadComponent: () => import('./pages/review/review.component').then(m => m.ReviewComponent), canActivate: [LoginGuard]},
   { path: 'menuxr', loadComponent: () => import('./pages/review-menu/review-menu.component').then(m => m.ReviewMenuComponent), canActivate: [LoginGuard]},
   { path: 'review-stats', loadComponent: () => import('./pages/review-stats/review-stats.component').then(m => m.ReviewStatsComponent), canActivate: [LoginGuard] },
-  { path: 'review-form', loadComponent: () => import('./pages/review-form/review-form.component').then(m => m.ReviewFormComponent) },
-
-
-
+  { path: 'review-form', loadComponent: () => import('./pages/review-modals/review-modals.component').then(m => m.ReviewModalsComponent) },
 
 
   { path: '', redirectTo: 'inicio', pathMatch: 'full' }, 

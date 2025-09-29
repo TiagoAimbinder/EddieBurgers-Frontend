@@ -1,0 +1,41 @@
+<section class="sect">
+  <div class="bg">
+    <div class="cont">
+      <div class="cont-title">
+        <h1 class="title">{{ Quest.ask }}</h1>
+        <p class="text">{{ Quest.text }}</p>
+      </div>
+
+      <div class="cont-emojis">
+        <button (click)="onSelect(1)" [class.active]="revSelected() === 1" class="btn">
+          <span>😞</span>
+          <span class="text-btn">Muy insatisfecho</span>
+        </button>
+        <button (click)="onSelect(2)" [class.active]="revSelected() === 2" class="btn">
+          <span>😐</span>
+          <span class="text-btn">Insatisfecho</span>
+        </button>
+        <button (click)="onSelect(3)" [class.active]="revSelected() === 3" class="btn">
+          <span>😊</span>
+          <span class="text-btn">Neutral</span>
+        </button>
+        <button (click)="onSelect(4)" [class.active]="revSelected() === 4" class="btn">
+          <span>😍</span>
+          <span class="text-btn">Satisfecho</span>
+        </button>
+        <button (click)="onSelect(5)" [class.active]="revSelected() === 5" class="btn">
+          <span>🤩</span>
+          <span class="text-btn">Muy satisfecho</span>
+        </button>
+      </div>
+
+      <div class="cont-btns">
+        <button (click)="onCancel()" class="btn-end btn-finish">No responder</button>
+        <button (click)="onSend()" [disabled]="revSelected() === 0" [class.disabled]="revSelected() === 0" class="btn-end btn-send">Enviar</button>
+      </div>
+    </div>
+</div>
+</section>
+
+
+<!-- 😞 😐 😊 😍 🤩-->

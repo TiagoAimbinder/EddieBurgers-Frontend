@@ -20,12 +20,17 @@ export class ModalReviewComponent {
     this.revSelected.set(selected); 
   }
 
-  public onSend = () => {
+  public onSend = (val: number) => {
+    this.revSelected.set(val);
+
     const obj: { value: number, askId: string } = {
       value: this.revSelected(),
       askId: this.Quest.askId,
-    }
+    };
+    
+    this.revSelected.set(0);
     this.Review.emit(obj);
+
   }
 
   public onCancel = () => {

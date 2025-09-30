@@ -42,7 +42,15 @@ export class ReviewService {
     return this.http.get(urlApi);
   }
 
+  createExperienceReview(experienceData: any): Observable<any> {
+    const urlApi = `${environment.const_url_review_server}/experience-review/create`;
+    return this.http.post(urlApi, experienceData);
+  }
 
+  getExperienceReviewStats(): Observable<any> {
+    const urlApi = `${environment.const_url_review_server}${endpoints.getExperienceReviewStats}`;
+    return this.http.get(urlApi);
+  }
 
 
 

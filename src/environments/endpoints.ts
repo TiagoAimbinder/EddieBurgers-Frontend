@@ -48,6 +48,10 @@ export enum endpoints {
   updateMenu = '/menu/update',
   deleteMenu = '/menu/delete',
 
+  // ---- ExperienceReview (nuevo)
+  createExperienceReview = '/experience-review/create',
+  getExperienceReviewStats = '/experience-review/stats'
+
 
 
 

@@ -5,7 +5,6 @@ import { ModalReviewComponent } from 'src/app/core/components/modal-review/modal
 import Swal from 'sweetalert2';
 import { ReviewService } from 'src/app/core/services/ReviewService/review.service';
 
-
 @Component({
   selector: 'app-review-modals',
   standalone: true,
@@ -34,7 +33,7 @@ export class ReviewModalsComponent implements OnInit {
     2: { askId: 'q2', ask: '¿Como calificas la atención en caja?', text: 'Tu opinión nos importa' },
     3: { askId: 'q3', ask: '¿Cómo calificas la calidad de la hamburguesa?', text: 'Tu opinión nos importa' },
     4: { askId: 'q4', ask: '¿Cómo calificas el tiempo de demora?', text: 'Tu opinión nos importa' }
-  }
+  };
 
   private _loadMenus(): void {
     this.reviewService.getAllMenu().subscribe({
@@ -44,7 +43,6 @@ export class ReviewModalsComponent implements OnInit {
   }
 
   public answers: { [key: string]: number } = {};
-
   public currentIndex: number = 1;
 
   public receptReview = (obj: { value: number, askId: string }) => {
@@ -53,53 +51,45 @@ export class ReviewModalsComponent implements OnInit {
   };
 
   onSubmit(): void {
-
-    if (this.reviewForm.valid === false) { 
-      Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Por favor, seleccioná un menú.',
-            confirmButtonText: 'Aceptar'
-          });
-          return; 
-    }
-
-    this.currentIndex = 10; 
-
-    const obj = {
-      message: this.reviewForm.value.rev_message,
-      men_id: this.reviewForm.value.men_id,
-      quest: this.answers
-    }
-
+  if (this.reviewForm.invalid) { 
     Swal.fire({
-      icon: 'success',
-      title: '¡Gracias!',
-      text: 'Tu reseña se ha guardado correctamente.',
+      icon: 'error',
+      title: 'Error',
+      text: 'Por favor, seleccioná un menú.',
       confirmButtonText: 'Aceptar'
-    }); 
-
+    });
     return; 
+  }
 
-    if (this.reviewForm.valid) {
-      this.reviewService.createReview(this.reviewForm.value).subscribe({
-        next: (res) => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Reseña creada!',
-            text: 'Tu reseña se ha guardado correctamente.',
-            confirmButtonText: 'Aceptar'
-          });        
-        },
-        error: (err) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Ocurrió un problema al crear la reseña. Inténtalo de nuevo.',
-            confirmButtonText: 'Aceptar'
-          });
-        }
+  this.currentIndex = 10; 
+
+  const obj = {
+    men_id: this.reviewForm.value.men_id,
+    review_message: this.reviewForm.value.rev_message,
+    q1: this.answers["q1"] || null,
+    q2: this.answers["q2"] || null,
+    q3: this.answers["q3"] || null,
+    q4: this.answers["q4"] || null
+  };
+
+  this.reviewService.createExperienceReview(obj).subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: '¡Gracias!',
+        text: 'Tu reseña se ha guardado correctamente.',
+        confirmButtonText: 'Aceptar'
+      });
+    },
+    error: (err) => {
+      console.error("Error al crear reseña", err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un problema al guardar la reseña.',
+        confirmButtonText: 'Aceptar'
       });
     }
-  }
+  });
+}
 }

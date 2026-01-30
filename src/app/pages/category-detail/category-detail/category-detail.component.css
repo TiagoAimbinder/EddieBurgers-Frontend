@@ -1,0 +1,221 @@
+/* --- LAYOUT PRINCIPAL --- */
+.main-content {
+    padding: 20px;
+    min-height: 100vh;
+    background-color: var(--secondary-color);
+}
+
+.content-wrapper {
+    max-width: 800px; /* Ancho máximo para que no se estire demasiado en PC */
+    margin: 0 auto;
+}
+
+/* --- BARRA SUPERIOR --- */
+.top-bar { margin-bottom: 20px; }
+
+.btn-back {
+    background: transparent;
+    border: 1px solid #555;
+    color: #aaa;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    transition: all 0.2s;
+}
+.btn-back:hover { border-color: #fff; color: #fff; }
+
+/* --- HEADER DE CATEGORÍA --- */
+.cat-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.badge-cat {
+    background: rgba(255,255,255,0.1);
+    color: #aaa;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.title {
+    font-size: 2.2rem;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    color: var(--main-color);
+}
+
+/* --- STATS GRID (Los cuadrados) --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Responsivo automático */
+    gap: 15px;
+}
+
+.stat-box {
+    background: var(--secondary-color);
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: transform 0.2s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.stat-box:hover { transform: translateY(-3px); }
+
+.icon-stat { font-size: 1.5rem; opacity: 0.8; }
+.stat-info span { font-size: 0.85rem; color: #888; display: block; margin-bottom: 5px; text-transform: uppercase; }
+.stat-info h3 { margin: 0; font-size: 1.4rem; font-weight: 700; }
+
+/* Colores específicos de Stats */
+.stat-box.profit { border-bottom: 3px solid #ccc; }
+.stat-box.profit .icon-stat, .stat-box.profit h3 { color: #ccc; }
+
+.stat-box.cost { border-bottom: 3px solid #ff6b6b; }
+.stat-box.cost .icon-stat, .stat-box.cost h3 { color: #ff6b6b; }
+
+.stat-box.price { border-bottom: 3px solid #4ecdc4; }
+.stat-box.price .icon-stat, .stat-box.price h3 { color: #4ecdc4; }
+
+
+/* --- SECCIÓN RECETA --- */
+.recipe-section {
+    background: var(--secondary-color);
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.section-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;
+}
+.subtitle { font-weight: 500; font-size: 1.1rem; color: #fff; margin: 0; }
+.item-count { font-size: 0.85rem; color: #666; }
+
+/* --- BARRA DE AGREGAR (Inputs) --- */
+.add-bar {
+    display: flex; gap: 10px; margin-bottom: 25px;
+    align-items: stretch;
+}
+
+/* Wrapper del Select para poner íconos */
+.select-wrapper {
+    position: relative; flex: 3;
+}
+.input-dark {
+    width: 100%; height: 45px;
+    background: #1a1a1a; border: 1px solid #444;
+    color: white; border-radius: 10px;
+    padding: 0 10px 0 35px; /* Espacio para el ícono izq */
+    outline: none; appearance: none; /* Quita estilo default */
+    font-size: 0.95rem; cursor: pointer;
+    transition: border 0.3s;
+}
+.input-dark:focus { border-color: var(--main-color); }
+.icon-input { position: absolute; left: 10px; top: 14px; color: var(--main-color); pointer-events: none; }
+.icon-arrow { position: absolute; right: 10px; top: 14px; color: #666; pointer-events: none; }
+
+/* Wrapper de Cantidad */
+.input-wrapper-qty { position: relative; flex: 1; min-width: 80px; }
+.input-dark.qty { padding: 0 10px; text-align: center; }
+.unit-label { 
+    position: absolute; right: 5px; top: 15px; 
+    font-size: 0.7rem; color: #666; pointer-events: none; 
+}
+
+/* Botón Agregar */
+.btn-add-item {
+    background: var(--main-color); border: none; color: white;
+    width: 50px; border-radius: 10px; cursor: pointer;
+    font-size: 1.3rem; display: flex; align-items: center; justify-content: center;
+    transition: filter 0.2s;
+}
+.btn-add-item:hover { filter: brightness(1.1); }
+.btn-add-item:active { transform: scale(0.95); }
+
+
+/* --- LISTA DE INGREDIENTES --- */
+.list-header {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: #666; text-transform: uppercase;
+    padding: 0 10px 5px 10px;
+}
+
+.recipe-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #333;
+    transition: background 0.2s;
+}
+.recipe-item:hover { background: rgba(255,255,255,0.02); }
+.recipe-item:last-child { border-bottom: none; }
+
+.item-main { display: flex; align-items: center; gap: 15px; }
+
+.qty-badge {
+    background: #333; color: var(--main-color);
+    min-width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+    border: 1px solid #444;
+}
+
+.item-details { display: flex; flex-direction: column; }
+.name { font-weight: 500; color: #eee; }
+.unit-price-small { font-size: 0.75rem; color: #666; }
+
+.item-actions { display: flex; align-items: center; gap: 15px; }
+.total-price { font-weight: 600; color: #fff; min-width: 60px; text-align: right; }
+
+.btn-remove {
+    background: transparent; border: none; color: #444;
+    cursor: pointer; font-size: 1.1rem; padding: 5px;
+    transition: color 0.2s;
+}
+.btn-remove:hover { color: #ff6b6b; }
+
+
+/* --- EMPTY STATE --- */
+.empty-state {
+    text-align: center; color: #666; padding: 40px 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.empty-state i { font-size: 2.5rem; opacity: 0.3; margin-bottom: 5px; }
+.empty-state p { margin: 0; font-size: 1.1rem; color: #888; }
+.empty-state span { font-size: 0.85rem; }
+
+/* Responsive */
+@media (max-width: 500px) {
+    .add-bar { flex-wrap: wrap; }
+    .select-wrapper { min-width: 100%; }
+    .btn-add-item { flex: 1; }
+}
+
+/* --- MENSAJE VACÍO --- */
+.empty-message {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+}
+
+.icon-empty {
+    font-size: 1.4rem;       /* Un poco más grande para que se vea bien */
+    margin-right: 12px;      /* <--- AQUÍ ESTÁ LA SEPARACIÓN QUE PEDISTE */
+    vertical-align: middle;  /* Alinea el ícono con el texto */
+    opacity: 0.6;
+}
+
+.empty-message span {
+    vertical-align: middle;  /* Alinea el texto con el ícono */
+    font-size: 0.95rem;
+}

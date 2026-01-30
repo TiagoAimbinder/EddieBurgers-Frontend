@@ -1,193 +1,226 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NavbarComponent } from 'src/app/core/components/navbar/navbar.component';
-import { FormsModule, ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { CategoriesService } from 'src/app/core/services/CategoriesService/categories.service';
+import { ActivatedRoute, RouterModule } from '@angular/router'; 
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { RouterLink } from '@angular/router';
+import { CategoriesService } from 'src/app/core/services/CategoriesService/categories.service'; 
 
 @Component({
-  selector: 'app-categories',
+  selector: 'app-categories', 
   standalone: true,
-  imports: [CommonModule, NavbarComponent, ReactiveFormsModule, FormsModule, NgFor, RouterLink],
+  imports: [CommonModule, NavbarComponent, ReactiveFormsModule, RouterModule],
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit{
+export class CategoriasComponent implements OnInit { 
+
+  public categories: any[] = [];
+  public categoriesOriginal: any[] = []; 
+  public sec_id: number = 0; 
+  public usu_id: number = 0;
 
   public showModalCreate: boolean = false;
   public showModalModify: boolean = false;
-  public formCategory : FormGroup = this._initForm();
-  public formCategoryCreate : FormGroup = this._initForm();
   public spinnerLoader: boolean = false;
-  private _categoriesSelected: any;
-  public users: any[] = [];
 
-
-  categories: any = [];
+  public formCategoryCreate: FormGroup;
+  public formCategory: FormGroup;
   
+  public selectedCatId: number | null = null;
 
-  constructor( 
-    private categoriesService : CategoriesService,
-    private formBuilder: FormBuilder) {
+  constructor(
+    private categoriesService: CategoriesService, 
+    private formBuilder: FormBuilder,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.usu_id = Number(localStorage.getItem('usu_id'));
+
+    this.formCategoryCreate = this.formBuilder.group({
+      cat_name: ['', Validators.required],
+      cat_profit_percent: ['', Validators.required]
+    });
+
+    this.formCategory = this.formBuilder.group({
+      cat_name: ['', Validators.required],
+      cat_profit_percent: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
-    this._getAllCategories();
-  }
-
-  private _initForm() : FormGroup<any> {
-    return this.formBuilder.group({
-      cat_name: ['', Validators.required],
-      cat_id: [''],
-      // cat_color: [''] // Valor por defecto para el color de la categoría
-
+    this.activatedRoute.params.subscribe(params => {
+      this.sec_id = Number(params['sec_id']); 
+      this._getAllCategories();
     });
   }
 
-  public returnUserName(usu_id: number): string {
-    const name = this.users.find((usu: any) => usu.usu_id === usu_id);
-    return name ? name.usu_name : 'Unknown';
-  }
-
-  public async submitForm() {
-
-    this.spinnerLoader = true;
-
-    if (this.formCategory.valid === false)  return this.spinnerLoader = false, this._alert(2, 'Error', 'Faltan campos por rellenar') ;
-
-    const usu_id = Number(localStorage.getItem('usu_id'));
-
-    const categorys = {
-      cat_name: this.formCategory.value.cat_name,
-      // cat_color: this.formCategory.value.cat_color
+  // --- OBTENER CATEGORÍAS ---
+private async _getAllCategories() {
+    try {
+      (await this.categoriesService.getAllCategories(this.sec_id)).subscribe({
+        next: (data: any) => {
+          const list = data.categories || [];
+          
+          // --- FILTRO MAGICO ---
+          // Solo mostramos las categorías que coincidan con la sección actual
+          if (this.sec_id) {
+             this.categories = list.filter((cat: any) => cat.sec_id === this.sec_id);
+          } else {
+             this.categories = list;
+          }
+          
+          this.categoriesOriginal = this.categories;
+        },
+        error: (err: any) => {
+          console.error(err);
+          this.categories = [];
+        }
+      });
+    } catch (error) {
+       console.error(error);
     }
-
-    const result = (await this.categoriesService.updateCategory(categorys,this._categoriesSelected, usu_id)).subscribe({
-      next: (data) => { 
-        this._alert(1, 'Categoria actualizada', 'Se actualizo la categoria correctamente');
-        this._getAllCategories();
-        this.showModalModify = false;
-        this.spinnerLoader = false;
-      },
-      error: (err) => {
-        this._alert(2, 'Error', 'No se pudo crear la categoria');
-        console.log(err);
-        this.spinnerLoader = false;
-      }
-    });
   }
 
+  public onSearch(event: any) {
+    const term = event.target.value.toLowerCase();
+    if (!term) {
+      this.categories = this.categoriesOriginal;
+      return;
+    }
+    this.categories = this.categoriesOriginal.filter((cat: any) => 
+      cat.cat_name.toLowerCase().includes(term)
+    );
+  }
+
+  public onClickAddCategory() {
+    this.showModalCreate = true;
+    this.showModalModify = false;
+    this.formCategoryCreate.reset();
+  }
+
+  public onClickModify(cat_id: number) {
+    this.selectedCatId = cat_id;
+    this.showModalModify = true;
+    this.showModalCreate = false;
+
+    const cat = this.categories.find((c: any) => c.cat_id === cat_id);
+    if (cat) {
+      this.formCategory.patchValue({
+        cat_name: cat.cat_name,
+        cat_profit_percent: cat.cat_profit_percent
+      });
+    }
+  }
+
+  public onClickCancel() {
+    this.showModalCreate = false;
+    this.showModalModify = false;
+    this.formCategoryCreate.reset();
+    this.formCategory.reset();
+  }
+
+  // --- CREAR ---
   public async submitFormCreate() {
+    if (this.formCategoryCreate.invalid) {
+      this._alert('warning', 'Atención', 'Complete todos los campos');
+      return;
+    }
+
+    this.spinnerLoader = true;
+    
+    // PREPARAMOS LOS DATOS PARA EVITAR ERROR 400
+    const data = {
+      ...this.formCategoryCreate.value,
+      // Aseguramos que el porcentaje sea número
+      cat_profit_percent: Number(this.formCategoryCreate.value.cat_profit_percent),
+      sec_id: Number(this.sec_id),
+      usu_id: Number(this.usu_id)
+    };
+
+    (await this.categoriesService.createCategories(data)).subscribe({
+      next: () => {
+        this.spinnerLoader = false;
+        this.showModalCreate = false; 
+        this._getAllCategories();
+        this._alert('success', 'Éxito', 'Categoría creada correctamente');
+      },
+      error: (err: any) => {
+        this.spinnerLoader = false;
+        this._alert('error', 'Error', 'No se pudo crear la categoría');
+      }
+    });
+  }
+
+  // --- ACTUALIZAR (AQUÍ ESTABA EL PROBLEMA) ---
+  public async submitForm() {
+    if (this.formCategory.invalid) {
+      this._alert('warning', 'Atención', 'Complete todos los campos');
+      return;
+    }
 
     this.spinnerLoader = true;
 
-    if (this.formCategoryCreate.valid === false)  return this.spinnerLoader = false, this._alert(2, 'Error', 'Faltan campos por rellenar') ;
+    // PREPARAMOS LOS DATOS: Convertimos a número y agregamos ID por si acaso
+    const data = {
+        ...this.formCategory.value,
+        cat_profit_percent: Number(this.formCategory.value.cat_profit_percent), // <-- Importante
+        cat_id: Number(this.selectedCatId) // <-- Importante
+    };
 
-    const usu_id = Number(localStorage.getItem('usu_id'));
-
-    const categorys2 = {
-      cat_name: this.formCategoryCreate.value.cat_name,
-      usu_id: usu_id,
-      // cat_color: this.formCategoryCreate.value.cat_color
-    }
-    
-    const result2 = (await this.categoriesService.createCategories(categorys2)).subscribe({
-      next: (data) => {
-        this._alert(1, 'Categoria creada', 'Se creo la categoria correctamente');
+    // Llamamos a updateCategory respetando la firma de tu servicio
+    // Orden probable: (data, cat_id, usu_id) o (categories, cat_id, usu_id)
+    (await this.categoriesService.updateCategory(data, this.selectedCatId!, this.usu_id)).subscribe({
+      next: () => {
+        this.spinnerLoader = false;
+        this.showModalModify = false; // <--- ESTO CIERRA EL CARTEL
         this._getAllCategories();
-        this.showModalCreate = false;
-        this.spinnerLoader = false;
+        this._alert('success', 'Éxito', 'Categoría actualizada correctamente');
       },
-      error: (err) => {
-        this._alert(2, 'Error', 'No se pudo crear la categoria');
-        console.log(err);
+      error: (err: any) => {
         this.spinnerLoader = false;
-      }
-    });
-    
-  }
-
-  private _getAllCategories = async () => {
-    (await this.categoriesService.getAllCategories()).subscribe({
-      next: (data) => {
-        this.categories = data.categories;
-      },
-      error: (err) => {
-        console.error('Error fetching categories:', err);
-        this.categories = [];
+        // Si sigue el error, imprime esto en consola para ver qué dice el backend
+        console.error("Error al actualizar:", err);
+        this._alert('error', 'Error', 'No se pudo actualizar la categoría');
       }
     });
   }
 
-  onClickCategory() {
-    
-  }
-  
-  onClickDelete(cat_id: number, cat_name: string){
+  // --- ELIMINAR ---
+  public onClickDelete(cat_id: number, cat_name: string) {
     Swal.fire({
-      title: "¿Estás seguro?",
-      text: `Estás por eliminar la categoría ${cat_name}`,
-      icon: "warning",
-      background: 'var(--secondary-color)',
-      color: 'var(--light-color)',
+      title: '¿Estás seguro?',
+      text: `Vas a eliminar la categoría "${cat_name}"`,
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: "Eliminar",
-      confirmButtonColor: 'var(--main-color)',
-      cancelButtonText: "Cancel",
-      reverseButtons: true
+      confirmButtonColor: '#ff6b6b',
+      cancelButtonColor: '#333',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      background: '#252525',
+      color: '#fff'
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const result = (await this.categoriesService.deleteCategory(cat_id)).subscribe({
-          next: (data) => {
+        (await this.categoriesService.deleteCategory(cat_id)).subscribe({
+          next: () => {
             this._getAllCategories();
-            this._alert(1, "Eliminado", "La categoría ha sido eliminada.");
+            this._alert('success', 'Eliminado', 'Categoría eliminada');
           },
-          error: (err) => {
-            console.error('Error al eliminar la categoría: ', err);
-            this._alert(2, "Error", "Error al intentar eliminar la categoría, intente más tarde");
+          error: (err: any) => {
+            this._alert('error', 'Error', 'No se pudo eliminar');
           }
-        })
+        });
       }
     });
   }
 
-  onClickModify(cat_id: number){
-    this.showModalModify = true;
-    this._categoriesSelected = cat_id;
-    const categorys = this.categories.find((cat: any) => cat.cat_id === cat_id);
-    this.formCategory.patchValue({
-      cat_id: categorys.cat_id,
-      cat_name: categorys.cat_name,
-      // cat_color: categorys.cat_color
-
-    });
-
-  }
-
-  onClickAddCategory(){
-    this.showModalCreate = true;
-    this.formCategoryCreate.reset();
-    this._categoriesSelected = null
-  }
-
-  onClickCancel(){
-    this.showModalModify = false;
-    this.showModalCreate = false;
-    this.formCategory.reset();
-    this.formCategoryCreate.reset();
-  }
-
-  private _alert = (type: number, title: string, text: string) => {
+  private _alert(icon: any, title: string, text: string) {
     Swal.fire({
-      icon: type === 1 ? "success" : "error",
-      title: title,
-      text: text,
-      color: "var(--main-color)",
-      background: "var(--secondary-color)",
-      confirmButtonColor: "var(--main-color)",
+      icon,
+      title,
+      text,
+      background: '#252525',
+      color: '#fff',
+      confirmButtonColor: '#4ecdc4'
     });
   }
 }
-
-

@@ -61,7 +61,6 @@ main {
   
   .cont-table {
     border-radius: 8px;
-    height: 60vh;
     overflow-y: scroll;
   }
   
@@ -285,3 +284,183 @@ main {
       font-size: 18px;
       color: var(--light-color);
     }
+
+    main {
+    padding: 20px;
+    color: var(--light-color); /* Asegúrate de tener estas variables globales o cámbialas */
+}
+
+/* --- FILTROS --- */
+.cont-filters {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    background: var(--secondary-color); /* Fondo suave */
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #333;
+}
+
+.btn-filter {
+    background-color: transparent;
+    color: #ccc;
+    border: 1px solid #555;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.btn-filter:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #888;
+    color: white;
+}
+
+.btn-filter.active {
+    background-color: var(--main-color);
+    color: white;
+    border-color: var(--main-color);
+}
+
+.btn-filter.reset {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+    margin-left: auto; /* Empuja el botón "Hoy" a la derecha si hay espacio */
+}
+.btn-filter.reset:hover {
+    background: rgba(255, 107, 107, 0.1);
+}
+
+/* --- NAVEGADOR DE FECHAS --- */
+.date-navigator {
+    display: flex;
+    align-items: center;
+    background: #222; 
+    border-radius: 8px;
+    padding: 4px;
+    border: 1px solid #444;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.date-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+}
+
+.icon-date {
+    position: absolute;
+    left: 8px;
+    color: var(--main-color);
+    pointer-events: none;
+    font-size: 1.1rem;
+}
+
+.input-date-custom {
+    background: transparent;
+    border: none;
+    color: white;
+    padding: 6px 5px 6px 32px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Invertir color del ícono nativo de calendario para modo oscuro */
+.input-date-custom::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+/* --- TABLA --- */
+.cont-table {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    background: var(--secondary-color);
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; 
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+}
+
+th {
+    
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+td {
+    color: #eee;
+    font-size: 0.9rem;
+}
+
+/* --- NO DATA --- */
+.cont-not-news {
+    text-align: center;
+    padding: 40px;
+    background: var(--secondary-color);
+    border-radius: 12px;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* --- STATS CARDS --- */
+.cont-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.text-stats {
+    background: var(--secondary-color);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    color: #ddd;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Si quieres poner el número más grande abajo, podrías ajustar aquí */
+}

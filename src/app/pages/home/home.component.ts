@@ -1,28 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, NgIf],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
 
+  showIngresosEgresos: boolean = true;
+  showCostos: boolean = true;
+  showResenas: boolean = true;
+  showVentas: boolean = true;
 
-  //showIngresosEgresos: boolean = true; // Bandera para controlar la visibilidad del botón
-
-
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    //const role_id = Number(localStorage.getItem('role_id'));
+    const role_id = Number(localStorage.getItem('role_id'));
 
-    // Verificar el role_id para decidir si mostrar el botón Ingresos - Egresos
-    //if (role_id === 2) {
-      //this.showIngresosEgresos = false;
+    // Si el rol es 3, solo mostramos el botón de "Cantidad de unidades vendidas"
+    if (role_id === 3) {
+      this.showIngresosEgresos = false;
+      this.showCostos = false;
+      this.showResenas = false;
+      this.showVentas = true; // solo este visible
     }
-
   }
+}

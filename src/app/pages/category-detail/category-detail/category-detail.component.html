@@ -1,0 +1,102 @@
+<app-navbar/>
+<main class="main-content">
+    
+    <div class="content-wrapper">
+        <div class="top-bar">
+            <button class="btn-back" routerLink="/categoria"> <i class="ph-light ph-arrow-left"></i> Volver
+            </button>
+        </div>
+
+        <header *ngIf="category" class="cat-header">
+            <div class="header-titles">
+                <span class="badge-cat">Categoría</span>
+                <h1 class="title">{{ category.cat_name }}</h1>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box profit">
+                    <div class="icon-stat"><i class="ph-light ph-trend-up"></i></div>
+                    <div class="stat-info">
+                        <span>Ganancia</span>
+                        <h3>{{ category.cat_profit_percent }}%</h3>
+                    </div>
+                </div>
+                
+                <div class="stat-box cost">
+                    <div class="icon-stat"><i class="ph-light ph-coins"></i></div>
+                    <div class="stat-info">
+                        <span>Costo Total</span>
+                        <h3>${{ totalCost | number:'1.0-2' }}</h3>
+                    </div>
+                </div>
+                
+                <div class="stat-box price">
+                    <div class="icon-stat"><i class="ph-light ph-tag"></i></div>
+                    <div class="stat-info">
+                        <span>Sugerido</span>
+                        <h3>${{ suggestedPrice | number:'1.0-2' }}</h3>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="recipe-section">
+            <div class="section-header">
+                <h2 class="subtitle">Calculadora de Receta</h2>
+                <span class="item-count">{{ recipeItems.length }} ingredientes</span>
+            </div>
+
+            <div class="add-bar">
+                <div class="select-wrapper">
+                    <i class="ph-light ph-package icon-input"></i>
+                    <select [(ngModel)]="selectedSupplyId" class="input-dark select-item">
+                        <option [ngValue]="null" disabled>Seleccionar Insumo...</option>
+                        <option *ngFor="let s of allSupplies" [value]="s.sup_id">
+                            {{ s.sup_name }} (${{s.sup_price}})
+                        </option>
+                    </select>
+                    <i class="ph-light ph-caret-down icon-arrow"></i>
+                </div>
+                
+                <div class="input-wrapper-qty">
+                    <input [(ngModel)]="selectedQuantity" type="number" min="1" class="input-dark qty" placeholder="1">
+                    <span class="unit-label">unid.</span>
+                </div>
+
+                <button (click)="addIngredient()" class="btn-add-item" title="Agregar">
+                    <i class="ph-light ph-plus"></i>
+                </button>
+            </div>
+
+            <div class="recipe-list">
+                <div class="list-header">
+                    <span>Insumo</span>
+                    <span class="text-right">Subtotal</span>
+                </div>
+
+                <div *ngFor="let item of recipeItems" class="recipe-item">
+                    <div class="item-main">
+                        <span class="qty-badge">{{ item.cxs_quantity }}</span>
+                        <div class="item-details">
+                            <span class="name">{{ item.sup_name }}</span>
+                            <span class="unit-price-small">${{ item.sup_price }} c/u</span>
+                        </div>
+                    </div>
+                    
+                    <div class="item-actions">
+                        <span class="total-price">${{ item.sup_price * item.cxs_quantity | number:'1.0-2' }}</span>
+                        <button (click)="removeIngredient(item.cxs_id)" class="btn-remove">
+                            <i class="ph-light ph-x"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div *ngIf="recipeItems.length === 0" class="empty-state">
+                    <i class="ph-light ph-cooking-pot"></i>
+                    <p>La receta está vacía.</p>
+                    <span>Agrega insumos arriba para calcular el costo.</span>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>

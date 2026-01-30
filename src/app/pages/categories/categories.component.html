@@ -1,92 +1,116 @@
 <app-navbar/>
 <main>
     <section class="cont-create">
-        <h1 class="title">
-            Costos
-        </h1>
-        <h2 class="second-title"> Categorias</h2>
-        <div class="table-container">
-            <table>
-                <tr *ngFor="let cat of categories" >
-                    <div class="content-category" [style.background]="cat.cat_color">
-                        <td>{{ cat.cat_name.length > 15 ? cat.cat_name.substring(0, 15) + '...' : cat.cat_name }}</td>
-                        <td class="cont-action"> 
-                            <button routerLink="/categoria/{{cat.cat_id}}" class="btn-action"><i class="ph-light ph-arrow-fat-right icon-action"></i></button>
-                            <button (click)="onClickDelete(cat.cat_id, cat.cat_name)" class="btn-action"><i class="ph-light ph-trash icon-action"></i></button>
-                            <button (click)="onClickModify(cat.cat_id)" class="btn-action"><i class="ph-light ph-pencil-simple icon-action"></i></button>
-                                
-                    </div>   
-                </tr>
-            </table>
-            
+        
+        <div class="header-section">
+            <h1 class="title">Categorías</h1>
+            <h2 class="second-title">Gestiona los productos de esta sección</h2>
         </div>
 
-        <div class="cont-btn-add">
-            <button (click)="onClickAddCategory()" class="btn-add"><i class="ph-light ph-rows-plus-bottom icon-add"></i></button>
+        <div class="actions-bar">
+            
+            <button class="btn-back" routerLink="/secciones">
+                <i class="ph-light ph-arrow-left"></i> Volver
+            </button>
+
+            <div class="search-container">
+                <i class="ph-light ph-magnifying-glass search-icon"></i>
+                <input type="text" 
+                       placeholder="Buscar categoría..." 
+                       (input)="onSearch($event)" 
+                       class="search-input">
+            </div>
+
+            <button (click)="onClickAddCategory()" class="btn-main">
+                <i class="ph-light ph-plus"></i> Nueva
+            </button>
         </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Nombre del Producto</th>
+                        <th style="width: 20%;">% Ganancia</th>
+                        <th style="width: 30%;" class="text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let cat of categories">
+                        <td class="name-col">
+                            <div class="cell-wrapper">
+                                <i class="ph-light ph-tag icon-cell"></i>
+                                <span>{{ cat.cat_name }}</span>
+                            </div>
+                        </td>
+                        
+                        <td class="profit-col">
+                            <span class="badge-profit">+{{ cat.cat_profit_percent }}%</span>
+                        </td>
+                        
+                        <td class="text-right">
+                            <button routerLink="/receta/{{cat.cat_id}}" class="btn-icon view" title="Ver Receta">
+                                <i class="ph-light ph-arrow-right"></i>
+                            </button>
+                            
+                            <button (click)="onClickModify(cat.cat_id)" class="btn-icon edit" title="Editar">
+                                <i class="ph-light ph-pencil-simple"></i>
+                            </button>
+                            
+                            <button (click)="onClickDelete(cat.cat_id, cat.cat_name)" class="btn-icon delete" title="Eliminar">
+                                <i class="ph-light ph-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr *ngIf="categories.length === 0">
+                        <td colspan="3" class="empty-message">
+                            <i class="ph-light ph-magnifying-glass"></i>
+                            <span>No se encontraron productos en esta sección.</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
     </section>
 </main>
 
-<div *ngIf="showModalModify==true" class="cont-modal"> 
-    <form [formGroup]="formCategory" action="" class="cont-form">
 
-        <div class="cont-input">
-            <span class="text-input">Nombre</span>
-            <label for="cat_name" class="lb-input">
-              <i class="ph-light ph-chat-text icon-form"></i>
-              <input id="cat_name" formControlName="cat_name" name="cat_name" type="text" class="input-form">
-            </label>
-        </div>
+<div *ngIf="showModalCreate || showModalModify" class="modal-overlay"> 
+    <div class="modal-content">
+        <h3 class="modal-title">
+            {{ showModalModify ? 'Editar Categoría' : 'Nueva Categoría' }}
+        </h3>
+        
+        <form [formGroup]="showModalModify ? formCategory : formCategoryCreate" class="form-grid">
+            
+            <div class="input-group">
+                <span class="label-text">Nombre</span>
+                <div class="input-wrapper">
+                    <i class="ph-light ph-tag icon-input"></i>
+                    <input formControlName="cat_name" type="text" placeholder="Ej: Pizza Muzzarella">
+                </div>
+            </div>
 
-        <!-- <div class="cont-input">
-            <span class="text-input">Color</span>
-            <label for="cat_color" class="lb-input">
-              <input id="cat_color" formControlName="cat_color" type="color" class="input-form color" >
-            </label>
-        </div> -->
-
-        <div class="cont-btn-form">
-            <button (click)="onClickCancel()" class="btn-form cancel">
-              Cancelar
-            </button>
-      
-            <button [disabled]="spinnerLoader === true" (click)="submitForm()" class="btn-form">
-              <span *ngIf="spinnerLoader === false">Aceptar</span>  
-              <span *ngIf="spinnerLoader === true" class="loader"></span>
-            </button>
-        </div>
-
-    </form>
-</div>
-
-<div *ngIf="showModalCreate==true" class="cont-modal"> 
-    <form [formGroup]="formCategoryCreate" action="" class="cont-form">
-
-        <div class="cont-input">
-            <span class="text-input">Nombre</span>
-            <label for="cat_name_create" class="lb-input">
-              <i class="ph-light ph-chat-text icon-form"></i>
-              <input id="cat_name_create" formControlName="cat_name" name="cat_name" type="text" class="input-form">
-            </label>
-        </div>
-
-        <!-- <div class="cont-input">
-            <span class="text-input">Color</span>
-            <label for="cat_color" class="lb-input">
-              <input id="cat_color" formControlName="cat_color" type="color" class="input-form color">
-            </label>
-        </div> -->
-
-        <div class="cont-btn-form">
-            <button (click)="onClickCancel()" class="btn-form cancel">
-              Cancelar
-            </button>
-      
-            <button [disabled]="spinnerLoader === true" (click)="submitFormCreate()" class="btn-form">
-              <span *ngIf="spinnerLoader === false">Aceptar</span>  
-              <span *ngIf="spinnerLoader === true" class="loader"></span>
-            </button>
-        </div>
-
-    </form>
+            <div class="input-group">
+                <span class="label-text">Porcentaje de Ganancia (%)</span>
+                <div class="input-wrapper">
+                    <i class="ph-light ph-percent icon-input"></i>
+                    <input formControlName="cat_profit_percent" type="number" placeholder="Ej: 30">
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button (click)="onClickCancel()" class="btn-secondary" type="button">Cancelar</button>
+                
+                <button [disabled]="spinnerLoader" 
+                        (click)="showModalModify ? submitForm() : submitFormCreate()" 
+                        class="btn-primary" type="button">
+                    <span *ngIf="!spinnerLoader">{{ showModalModify ? 'Actualizar' : 'Guardar' }}</span>
+                    <div *ngIf="spinnerLoader" class="loader"></div>
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

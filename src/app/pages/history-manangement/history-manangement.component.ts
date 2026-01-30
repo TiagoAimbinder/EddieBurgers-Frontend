@@ -69,8 +69,9 @@ export class HistoryManangementComponent implements OnInit {
 
   private _getAllUsers = async () => {
     (await this.userService.getAllUsers()).subscribe({
+      
       next: (data) => {
-        console.log(data)
+        
         this.users = data.users;
         this._getAllManangement();
       }, 
@@ -84,9 +85,10 @@ export class HistoryManangementComponent implements OnInit {
   private _getAllCurrencyTypes = async () => {
     (await this.currencyService.getAllCurrency()).subscribe({
       next: (data) => {
-        this.currencyTypes = data.data;
+        this.currencyTypes = data.currency;
         this.totalAmount = this.currencyTypes.map((cur: Currency) => ({ cur_id: cur.cur_id, cur_name: cur.cur_name, total: 0,}))
         this._getAllUsers();
+        
 
       }, 
       error: (err) => {

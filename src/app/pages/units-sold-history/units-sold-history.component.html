@@ -1,65 +1,79 @@
 <app-navbar/>
 <main>
 
-      <div class="cont-filters">
-        <button (click)="onFilterLocal()" class="btn-filter">{{selectedLocal ? selectedLocal.name: "General"}}</button>
-    </div>
-        <!-- Container Table -->
-        <div *ngIf="saleHistoryFiltered.length >= 1" class="cont-table">
-            <table>
-                <tr class="t-row-head">
-                    <th>Fecha</th>
-                    <th>Venta</th>
-                    <th>Cantidad</th>
-                    <th>Tipo</th>
-                    <th>Local</th>
-
-                    <!-- <th>Acción</th> -->
-                </tr>
-                <tr *ngFor="let mov of saleHistoryFiltered.reverse()">
-                    <td>{{_formatDate(mov.sal_date)}}</td>
-                    <td>{{mov.sal_name}}</td>
-                    <td>{{mov.sal_quantity}}</td>
-                    <td>{{mov.sal_type==1 ? 'Ingreso' : 'Egreso'}}</td>
-                    <td>{{mov.sal_local==1 ? 'Eddie Costa' : 'Eddie Centro'}}</td>
-
-                    <!-- <td class="cont-action"> 
-                      <button (click)="onClickModify(mov.his_id)" class="btn-action"><i class="ph-light ph-pencil-simple icon-action"></i></button>
-                      <button (click)="onClickDelete(mov.his_id, mov.his_type, mov.his_amount)" class="btn-action"><i class="ph-light ph-trash icon-action"></i></button>
-                    </td> -->
-      
-                </tr>
-            </table>
-          </div>
-      
-          <div *ngIf="saleHistoryFiltered.length < 1" class="cont-not-news">
-              <span class="not-movement">No hay movimientos creados.</span>
-          </div>
-
-          <div class="cont-stats" >
-
-
-            <span class="text-stats">
-              Total General: {{ totals() ? totals().total_general: "0"| number:'1.2-2'}}
-            </span>
-            <span class="text-stats">
-                Total Mensual: {{ totals() ? totals().total_mensual: "0"| number:'1.2-2'}}
-            </span>
-            <span class="text-stats">
-                Total Semanal: {{ totals() ? totals().total_semanal: "0"| number:'1.2-2'}}
-            </span>
-            <span class="text-stats">
-                Promedio Diario General: {{ totals() ? totals().promedio_diario_general: "0"| number:'1.2-2'}}
-            </span>
-            <span class="text-stats">
-                Promedio Diario Mensual: {{ totals() ? totals().promedio_diario_mensual: "0"| number:'1.2-2'}}
-            </span>
-            <span class="text-stats">
-                Promedio Diario Semanal: {{ totals() ? totals().promedio_diario_semanal: "0"| number:'1.2-2'}}
-            </span>
-
-        </div>
-
+    <div class="cont-filters">
         
+        <button (click)="onFilterLocal()" class="btn-filter" [ngClass]="{'active': selectedLocal}">
+            <i class="ph-light ph-storefront"></i>
+            {{selectedLocal ? selectedLocal.name : "Todos los Locales"}}
+        </button>
+    
+        <div class="date-navigator">
+            <button (click)="changeMonth(-1)" class="btn-icon" title="Mes Anterior">
+                <i class="ph-light ph-caret-left"></i>
+            </button>
+    
+            <div class="date-input-wrapper">
+                <i class="ph-light ph-calendar-blank icon-date"></i>
+                <input type="month" 
+                       [(ngModel)]="filterDate" 
+                       (change)="onDateChange()" 
+                       class="input-date-custom">
+            </div>
+    
+            <button (click)="changeMonth(1)" class="btn-icon" title="Mes Siguiente">
+                <i class="ph-light ph-caret-right"></i>
+            </button>
+        </div>
+    
+        <button *ngIf="!isCurrentMonth()" (click)="resetDate()" class="btn-filter reset" title="Volver a hoy">
+            <i class="ph-light ph-arrow-counter-clockwise"></i> Hoy
+        </button>
+    
+    </div>
+
+    <div *ngIf="saleHistoryFiltered.length >= 1" class="cont-table">
+        <table>
+            <tr class="t-row-head">
+                <th>Fecha</th>
+                <th>Venta</th>
+                <th>Cantidad</th>
+                <th>Tipo</th>
+                <th>Local</th>
+            </tr>
+            <tr *ngFor="let mov of saleHistoryFiltered.slice().reverse()">
+                <td>{{_formatDate(mov.sal_date)}}</td>
+                <td>{{mov.sal_name}}</td>
+                <td>{{mov.sal_quantity}}</td>
+                <td>{{mov.sal_type==1 ? 'Ingreso' : 'Egreso'}}</td>
+                <td>{{mov.sal_local==1 ? 'Eddie Costa' : 'Eddie Centro'}}</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div *ngIf="saleHistoryFiltered.length < 1" class="cont-not-news">
+        <span class="not-movement">No hay movimientos en este periodo.</span>
+    </div>
+
+    <div class="cont-stats" >
+        <span class="text-stats">
+            Total General: {{ totals() ? totals().total_general: "0"| number:'1.2-2'}}
+        </span>
+        <span class="text-stats">
+            Total Mensual: {{ totals() ? totals().total_mensual: "0"| number:'1.2-2'}}
+        </span>
+        <span class="text-stats">
+            Total Semanal: {{ totals() ? totals().total_semanal: "0"| number:'1.2-2'}}
+        </span>
+        <span class="text-stats">
+            Promedio Diario General: {{ totals() ? totals().promedio_diario_general: "0"| number:'1.2-2'}}
+        </span>
+        <span class="text-stats">
+            Promedio Diario Mensual: {{ totals() ? totals().promedio_diario_mensual: "0"| number:'1.2-2'}}
+        </span>
+        <span class="text-stats">
+            Promedio Diario Semanal: {{ totals() ? totals().promedio_diario_semanal: "0"| number:'1.2-2'}}
+        </span>
+    </div>
 
 </main>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { endpoints } from 'src/environments/endpoints';
 import { environment } from 'src/environments/environment';
@@ -13,8 +13,7 @@ export class ReviewService {
 
   createReview(reviewData: any): Observable<any> {
     const urlApi = `${environment.const_url_review_server}${endpoints.createReview}`;
-    return this.http.post(urlApi, reviewData)
-
+    return this.http.post(urlApi, reviewData);
   }
 
   getAllMenu(): Observable<any> {
@@ -52,6 +51,13 @@ export class ReviewService {
     return this.http.get(urlApi);
   }
 
+  getExperienceStats(): Observable<any> {
+    const urlApi = `${environment.const_url_review_server}/experience-review/stats`;
+    return this.http.get(urlApi);
+  }
+  getAllExperienceReviews(): Observable<any> {
+    const urlApi = `${environment.const_url_review_server}/experience-review/all`;
+    return this.http.get(urlApi);
+  }
+}
 
-
-} 

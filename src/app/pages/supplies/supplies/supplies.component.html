@@ -1,0 +1,98 @@
+<app-navbar/>
+<main>
+    <section class="cont-create">
+        <div class="header-section">
+            <div>
+                <h1 class="title">Insumos</h1>
+                <h2 class="second-title">Gestión de Precios y Stock Base</h2>
+            </div>
+        </div>
+
+        <div class="actions-bar">
+            <div class="search-container">
+                <i class="ph-light ph-magnifying-glass search-icon"></i>
+                <input type="text" 
+                       placeholder="Buscar por nombre..." 
+                       (input)="onSearch($event)" 
+                       class="search-input">
+            </div>
+
+            <button (click)="onClickAddSupply()" class="btn-main">
+                <i class="ph-light ph-plus"></i> Nuevo Insumo
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre del Insumo</th>
+                        <th>Costo Unitario</th>
+                        <th class="text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let sup of supplies">
+                        <td class="name-col">
+                            <div class="cell-wrapper">
+                                <i class="ph-light ph-package icon-cell"></i>
+                                    {{ sup.sup_name }}
+                            </div>
+                        </td>
+                        <td class="price-col">${{ sup.sup_price | number:'1.0-2' }}</td>
+                        <td class="text-right">
+                            <button (click)="onClickEdit(sup)" class="btn-icon edit" title="Editar">
+                                <i class="ph-light ph-pencil-simple"></i>
+                            </button>
+                            <button (click)="onClickDelete(sup.sup_id, sup.sup_name)" class="btn-icon delete" title="Eliminar">
+                                <i class="ph-light ph-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    
+                    <tr *ngIf="supplies.length === 0">
+                        <td colspan="3" class="empty-state">
+                            <i class="ph-light ph-magnifying-glass"></i>
+                            <span>No se encontraron insumos.</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<div *ngIf="showModalCreate" class="modal-overlay"> 
+    <div class="modal-content">
+        <h3 class="modal-title">
+            {{ selectedSupplyId ? 'Editar Insumo' : 'Nuevo Insumo' }}
+        </h3>
+        
+        <form [formGroup]="formSupply" class="form-grid">
+            
+            <div class="input-group">
+                <span class="label-text">Nombre</span>
+                <div class="input-wrapper">
+                    <i class="ph-light ph-tag icon-input"></i>
+                    <input formControlName="sup_name" type="text" placeholder="Ej: Pan de Papa">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="label-text">Costo Base ($)</span>
+                <div class="input-wrapper">
+                    <i class="ph-light ph-currency-dollar icon-input"></i>
+                    <input formControlName="sup_price" type="number" placeholder="0.00">
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button (click)="onClickCancel()" class="btn-secondary" type="button">Cancelar</button>
+                <button [disabled]="spinnerLoader" (click)="submitForm()" class="btn-primary" type="button">
+                    <span *ngIf="!spinnerLoader">{{ selectedSupplyId ? 'Actualizar' : 'Guardar' }}</span>  
+                    <div *ngIf="spinnerLoader" class="loader"></div>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

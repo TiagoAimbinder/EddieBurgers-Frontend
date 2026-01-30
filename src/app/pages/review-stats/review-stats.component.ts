@@ -5,18 +5,13 @@ import { ReviewService } from 'src/app/core/services/ReviewService/review.servic
 import { NavbarComponent } from 'src/app/core/components/navbar/navbar.component';
 
 interface Review {
-  men_id: number;
-  mxr_id: number;
-  mxr_star: number;
+  exp_id: number;
   menu: { men_id: number; men_name: string } | null;
-  rev_id: number;
-  review: {
-    rev_id: number;
-    rev_message: string;
-    usu_id?: number;
-    usuxr_name?: string;
-    usuxr_email?: string;
-  };
+  review_message: string;
+  q1?: number;
+  q2?: number;
+  q3?: number;
+  q4?: number;
 }
 
 interface MenuStats {
@@ -46,16 +41,36 @@ export class ReviewStatsComponent implements OnInit {
   filteredReviews: FilteredReview[] = [];
   selectedMenuSearch: string = '';
 
+  experienceStats: any = {};
+
+  emojiMap = [
+    { value: 1, icon: '😞' },
+    { value: 2, icon: '😐' },
+    { value: 3, icon: '😊' },
+    { value: 4, icon: '😍' },
+    { value: 5, icon: '🤩' }
+  ];
+
   constructor(private reviewService: ReviewService) {}
 
   ngOnInit(): void {
-    this.reviewService.getAllReviewsWithMenus().subscribe({
+    // 👉 Nuevo: traer reviews desde ExperienceReview
+    this.reviewService.getAllExperienceReviews().subscribe({
       next: (res: any) => {
         this.reviews = Array.isArray(res) ? res : res.reviews || [];
-        console.log('Reviews recibidas:', this.reviews);
+        console.log('Reviews de ExperienceReview recibidas:', this.reviews);
         this.calculateStats();
       },
-      error: (err) => console.error('Error al obtener reseñas:', err)
+      error: (err) => console.error('Error al obtener reviews de experiencia:', err)
+    });
+
+    // Traer estadísticas de experiencia
+    this.reviewService.getExperienceStats().subscribe({
+      next: (res: any) => {
+        this.experienceStats = res;
+        console.log('📊 Stats de experiencia recibidas:', this.experienceStats);
+      },
+      error: (err) => console.error('Error al obtener stats de experiencia:', err)
     });
   }
 
@@ -74,25 +89,20 @@ export class ReviewStatsComponent implements OnInit {
     const menuStats: Record<string, MenuStats> = {};
 
     this.reviews.forEach((item) => {
-      // Ignorar reseñas con menú eliminado
       if (!item.menu || !item.menu.men_name) return;
 
       const menuName = item.menu.men_name;
       if (!menuStats[menuName]) menuStats[menuName] = { total: 0, sumStars: 0 };
       menuStats[menuName].total += 1;
-      menuStats[menuName].sumStars += item.mxr_star;
+      menuStats[menuName].sumStars += item.q1 || 0; // Usamos q1 como proxy de "stars"
     });
 
-    // Calcular promedio de estrellas
     for (const menu in menuStats) {
       menuStats[menu].avgStars = (menuStats[menu].sumStars / menuStats[menu].total).toFixed(2);
     }
 
     this.stats = menuStats;
-
-    // Ordenar menús de mayor a menor según total de reseñas
     this.menus = Object.keys(this.stats).sort((a, b) => this.stats[b].total - this.stats[a].total);
-
     console.log('Stats calculadas y ordenadas:', this.stats);
   }
 
@@ -105,13 +115,33 @@ export class ReviewStatsComponent implements OnInit {
     this.filteredReviews = this.reviews
       .filter((item) => item.menu?.men_name === this.selectedMenu)
       .map((item) => ({
-        userName: item.review.usuxr_name || item.review.usuxr_email || 'Anónimo',
-        message: item.review.rev_message,
-        stars: item.mxr_star
+        userName: 'Anónimo', // No tenemos usuarios en ExperienceReview
+        message: item.review_message || '',
+        stars: item.q1 || 0
       }));
   }
 
   getMenuNames(): string[] {
     return this.menus;
+  }
+
+  getCountFor(question: string, value: number): number {
+    if (!this.experienceStats || !this.experienceStats[question]) return 0;
+    const found = this.experienceStats[question].find((s: any) => s.value === value);
+    return found ? found.count : 0;
+  }
+
+  getExperienceKeys(): string[] {
+    return Object.keys(this.experienceStats || {});
+  }
+
+  getQuestionLabel(question: string): string {
+    const labels: Record<string, string> = {
+      q1: '¿Como calificas tu experiencia de hoy?',
+      q2: '¿Como calificas la atención en caja?',
+      q3: '¿Cómo calificas la calidad de la hamburguesa?',
+      q4: '¿Cómo calificas el tiempo de demora?'
+    };
+    return labels[question] || question;
   }
 }

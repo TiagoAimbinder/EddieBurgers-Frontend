@@ -5,23 +5,24 @@
     <h2 class="title">Estadísticas de Reseñas</h2>
 
 
+    <!-- Tabla cruzada de preguntas vs caritas -->
+<div *ngIf="experienceStats" class="cont-table">
+  <h3>Estadísticas de Experiencia</h3>
+  <table>
+    <tr class="t-row-head">
+      <th>Pregunta</th>
+      <th *ngFor="let emoji of emojiMap">{{ emoji.icon }}</th>
+    </tr>
 
+    <tr *ngFor="let question of getExperienceKeys()">
+      <td>{{ getQuestionLabel(question) }}</td>
+      <td *ngFor="let emoji of emojiMap">
+        {{ getCountFor(question, emoji.value) }}
+      </td>
+    </tr>
+  </table>
+</div>
 
-    <!-- Tabla resumen de menus -->
-    <div *ngIf="getMenuNames().length >= 1" class="cont-table">
-      <table>
-        <tr class="t-row-head">
-          <th>Menú</th>
-          <th>Promedio de estrellas</th>
-          <th>Total reseñas</th>
-        </tr>
-        <tr *ngFor="let menu of getMenuNames()">
-          <td>{{ menu }}</td>
-          <td>{{ stats[menu].avgStars }}</td>
-          <td>{{ stats[menu].total }}</td>
-        </tr>
-      </table>
-    </div>
 
         <!-- Dropdown para seleccionar menú -->
     <div class="cont-filters">
@@ -45,11 +46,9 @@
       <table>
         <tr class="t-row-head">
           <th>Mensaje</th>
-          <th>Estrellas</th>
         </tr>
         <tr *ngFor="let review of filteredReviews">
           <td>{{ review.message }}</td>
-          <td>{{ review.stars }}</td>
         </tr>
       </table>
     </div>

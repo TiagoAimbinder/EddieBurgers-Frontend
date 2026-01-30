@@ -14,6 +14,8 @@ export class NavbarComponent implements OnInit{
 
   public navbarName = 'Eddie Burguers'; 
   mostrarItem = true
+  mostrarTodoMenu = true; 
+
 
   constructor (private router: Router) {
   }
@@ -27,6 +29,10 @@ export class NavbarComponent implements OnInit{
     const role_id = Number(localStorage.getItem('role_id'));
     if ( role_id === 2) {
       this.mostrarItem = false
+    }
+
+    if (role_id === 3) {
+      this.mostrarTodoMenu = false;
     }
   }
 

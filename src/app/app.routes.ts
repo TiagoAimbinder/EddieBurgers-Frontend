@@ -12,13 +12,22 @@ export const routes: Routes = [
   { path: 'gestion/historial', loadComponent: () => import('./pages/history-manangement/history-manangement.component').then(m => m.HistoryManangementComponent), canActivate: [LoginGuard] },
   { path: 'categoria/:cat_id', loadComponent: () => import('./pages/expenses/expenses.component').then(m => m.ExpensesComponent), canActivate: [LoginGuard]},
   { path: 'migrate', loadComponent: () => import('./pages/history-manangement-week/history-manangement-week.component').then(m => m.HistoryManangementWeekComponent), canActivate: [LoginGuard]},
-  { path: 'categoria', loadComponent: () => import('./pages/categories/categories.component').then(m => m.CategoriesComponent), canActivate: [LoginGuard]},
+  { path: 'categoria', loadComponent: () => import('./pages/categories/categories.component').then(m => m.CategoriasComponent), canActivate: [LoginGuard]},
   { path: 'ventas', loadComponent: () => import('./pages/units-sold/units-sold.component').then(m => m.UnitsSoldComponent), canActivate: [LoginGuard]},
   { path: 'ventas/historial', loadComponent: () => import('./pages/units-sold-history/units-sold-history.component').then (m => m.UnitsSoldHistoryComponent), canActivate: [LoginGuard]},
   { path: 'resenas', loadComponent: () => import('./pages/review/review.component').then(m => m.ReviewComponent), canActivate: [LoginGuard]},
   { path: 'menuxr', loadComponent: () => import('./pages/review-menu/review-menu.component').then(m => m.ReviewMenuComponent), canActivate: [LoginGuard]},
   { path: 'review-stats', loadComponent: () => import('./pages/review-stats/review-stats.component').then(m => m.ReviewStatsComponent), canActivate: [LoginGuard] },
   { path: 'review-form', loadComponent: () => import('./pages/review-modals/review-modals.component').then(m => m.ReviewModalsComponent) },
+  { path: 'costs-menu' , loadComponent: () => import('./pages/costs-menu/costs-menu.component').then(m => m.CostsMenuComponent), canActivate: [LoginGuard] },
+  { path: 'insumos', loadComponent: () => import('./pages/supplies/supplies/supplies.component').then(m => m.SuppliesComponent), canActivate: [LoginGuard] },
+  { path: 'secciones', loadComponent: () => import('./pages/sections/sections/sections.component').then(m => m.SectionsComponent), canActivate: [LoginGuard] },
+  
+  // Lista de Categorías (Simple)
+  { path: 'secciones/:sec_id/categorias', loadComponent: () => import('./pages/categories/categories.component').then(m => m.CategoriasComponent), canActivate: [LoginGuard] },
+
+  // NUEVA: Detalle / Calculadora (Entrar a la categoría)
+  { path: 'receta/:cat_id', loadComponent: () => import('./pages/category-detail/category-detail/category-detail.component').then(m => m.CategoryDetailComponent), canActivate: [LoginGuard] },
 
 
   { path: '', redirectTo: 'inicio', pathMatch: 'full' }, 

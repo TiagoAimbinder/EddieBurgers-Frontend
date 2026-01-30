@@ -22,7 +22,7 @@ export class ReviewModalsComponent implements OnInit {
   ngOnInit(): void {
     this.reviewForm = this.fb.group({
       men_id: ['', Validators.required],
-      rev_message: ['']
+      review_message: ['']
     });
 
     this._loadMenus();
@@ -65,7 +65,7 @@ export class ReviewModalsComponent implements OnInit {
 
   const obj = {
     men_id: this.reviewForm.value.men_id,
-    review_message: this.reviewForm.value.rev_message,
+    review_message: this.reviewForm.value.review_message,
     q1: this.answers["q1"] || null,
     q2: this.answers["q2"] || null,
     q3: this.answers["q3"] || null,

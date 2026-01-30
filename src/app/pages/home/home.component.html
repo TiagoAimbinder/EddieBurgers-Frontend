@@ -7,14 +7,14 @@
     </header>
 
     <div class="cont-grid">
-      <div  routerLink="/gestion" class="cont-link ing-egr">
+      <div *ngIf="showIngresosEgresos" routerLink="/gestion" class="cont-link ing-egr">
         <div class="cont-info">
           <i class="ph-fill ph-wallet icon"></i>
           <span class="text-link">Ingresos - Egresos</span>
         </div>
       </div>
 
-      <div routerLink="/categoria" class="cont-link gastos" >
+      <div *ngIf="showCostos" routerLink="/costs-menu" class="cont-link gastos" >
         <div class="cont-info">
           <i class="ph-fill ph-currency-dollar-simple icon"></i>
           <span class="text-link">Costos</span>
@@ -28,14 +28,14 @@
         </div>
       </div> -->
 
-      <div routerLink="/ventas" class="cont-link categoria">
+      <div *ngIf="showVentas" routerLink="/ventas" class="cont-link categoria">
         <div class="cont-info">
           <i class="ph-fill ph-hand-coins icon"></i>
           <span class="text-link">Cantidad de unidades vendidas</span>
         </div>
       </div>
 
-      <div routerLink="/resenas" class="cont-link resena">
+      <div *ngIf="showResenas" routerLink="/resenas" class="cont-link resena">
         <div class="cont-info">
           <i class="ph ph-list-star icon"></i>
           <span class="text-link">Reseñas</span>

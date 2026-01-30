@@ -11,6 +11,7 @@
       <nav class="cont-menu">
         <ul>
           <li routerLink="/inicio" class="item">Inicio</li>
+           <ng-container *ngIf="mostrarTodoMenu">
             <li class="item dropdown" *ngIf="mostrarItem===true">
             <span class="dropbtn">Ingresos - Egresos ▾</span>
           <ul class="submenu">
@@ -21,10 +22,10 @@
           </ul>
           </li>
 
-          <li routerLink="/categoria" class="item">Costos</li>
+          <li routerLink="/costs-menu" class="item">Costos</li>
           <li routerLink="/ventas" class="item">Cantidad de unidades vendidas</li>
           <li routerLink="/resenas" class="item">Reseñas</li>
-
+        </ng-container>
         </ul>
       </nav>
     </div>

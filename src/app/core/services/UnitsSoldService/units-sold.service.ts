@@ -23,27 +23,31 @@ export class UnitsSoldService {
     return this.http.post(urlApi, unitsSold, { headers: this.headers() });
   }
 
-  unitsSoldGetAll = async (usu_id: number) : Promise<Observable<any>> => {
-    const urlApi = environment.const_url_server + endpoints.getAllsaleHistory + '?usu_id=' + usu_id ;  
+  unitsSoldGetAll = async (usu_id: number, month?: number, year?: number) : Promise<Observable<any>> => {
+    let urlApi = `${environment.const_url_server}${endpoints.getAllsaleHistory}?usu_id=${usu_id}`;
+    
+    if (month && year) {
+        urlApi += `&month=${month}&year=${year}`;
+    }
     return this.http.get(urlApi, { headers: this.headers() });
   }
 
-  unitsSoldGetTotals = async (usu_id: number, sal_local: number | null): Promise<Observable<any>> => {
+unitsSoldGetTotals = async (usu_id: number, sal_local: number | null, month?: number, year?: number): Promise<Observable<any>> => {
     let urlApi = `${environment.const_url_server}${endpoints.getsaleHistoryTotal}?usu_id=${usu_id}`;
 
-    // Si sal_local es null o undefined, lo enviamos como un valor explícito como 'null'
     if (sal_local !== null && sal_local !== undefined) {
         urlApi += `&sal_local=${sal_local}`;
     } else {
-        urlApi += `&sal_local=null`;  // Aquí agregas 'null' explícitamente si sal_local es null o undefined
+        urlApi += `&sal_local=null`; 
     }
 
+    if (month && year) {
+        urlApi += `&month=${month}&year=${year}`;
+    }
     
     return this.http.get(urlApi, { headers: this.headers() });
+  };
 };
 
-
-
-};
 
 

@@ -1,0 +1,84 @@
+<app-navbar/>
+<main>
+    <section class="cont-create">
+        
+        <div class="header-section">
+            <h1 class="title">Secciones</h1>
+            <h2 class="second-title">Elige o Crea una Sección</h2>
+        </div>
+
+        <div class="actions-bar">
+            <div class="search-container">
+                <i class="ph-light ph-magnifying-glass search-icon"></i>
+                <input type="text" 
+                       placeholder="Buscar sección..." 
+                       (input)="onSearch($event)" 
+                       class="search-input">
+            </div>
+            
+            <button (click)="onClickAdd()" class="btn-main">
+                <i class="ph-light ph-plus"></i> Nueva Sección
+            </button>
+        </div>
+
+        <div class="cards-grid">
+            
+            <div *ngFor="let sec of sections" 
+                 class="section-card"
+                 routerLink="/secciones/{{sec.sec_id}}/categorias">
+                 
+                <div class="card-content">
+                    <div class="icon-header">
+                        <i class="ph-light ph-squares-four"></i>
+                    </div>
+                    <h3 class="card-title">{{ sec.sec_name }}</h3>
+                    <span class="card-link">
+                        Ver Productos <i class="ph-light ph-arrow-right"></i>
+                    </span>
+                </div>
+                
+                <div class="card-actions">
+                    <button (click)="$event.stopPropagation(); onClickEdit(sec)" class="btn-icon edit" title="Editar">
+                        <i class="ph-light ph-pencil-simple"></i>
+                    </button>
+                    <button (click)="$event.stopPropagation(); onClickDelete(sec.sec_id, sec.sec_name)" class="btn-icon delete" title="Eliminar">
+                        <i class="ph-light ph-trash"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <div *ngIf="sections.length === 0" class="empty-state">
+                <i class="ph-light ph-magnifying-glass"></i>
+                <span>No se encontraron secciones.</span>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<div *ngIf="showModalCreate" class="modal-overlay"> 
+    <div class="modal-content">
+        <h3 class="modal-title">
+            {{ selectedSecId ? 'Editar Sección' : 'Nueva Sección' }}
+        </h3>
+        
+        <form [formGroup]="formSection" class="form-grid">
+            <div class="input-group">
+                <span class="label-text">Nombre de la Sección</span>
+                <div class="input-wrapper">
+                    <i class="ph-light ph-tag icon-input"></i>
+                    <input formControlName="sec_name" type="text" placeholder="Ej: Cocina, Barra, Patio...">
+                </div>
+            </div>
+            
+            <div class="modal-actions">
+                <button (click)="showModalCreate = false" class="btn-secondary" type="button">Cancelar</button>
+                <button [disabled]="spinnerLoader" (click)="submitForm()" class="btn-primary" type="button">
+                    <span *ngIf="!spinnerLoader">{{ selectedSecId ? 'Actualizar' : 'Guardar' }}</span>
+                    <div *ngIf="spinnerLoader" class="loader"></div>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
